@@ -12,6 +12,16 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path
 
+# settings.py
+
+# Add these lines at the top of the file
+import os
+from dotenv import load_dotenv
+load_dotenv()  # This loads the .env file at the project root
+
+# The rest of your settings file follows...
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 

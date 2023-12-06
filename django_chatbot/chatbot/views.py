@@ -1,25 +1,24 @@
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
-import openai
-
+from openai import OpenAI
+import os
 from django.contrib import auth
 from django.contrib.auth.models import User
 from .models import Chat
-
 from django.utils import timezone
 
 
-openai_api_key = 'input-your-key'
-openai.api_key = openai_api_key
+# Fetch the OpenAI API key from an environment variable
+openai_api_key = os.getenv('OPENAI_API_KEY')
+client = OpenAI(api_key=openai_api_key)
+
 
 def ask_openai(message):
-    response = openai.ChatCompletion.create(
-        model = "gpt-4",
-        messages=[
-            {"role": "system", "content": "You are an helpful assistant."},
-            {"role": "user", "content": message},
-        ]
-    )
+    response = client.chat.completions.create(model = "gpt-4",
+    messages=[
+        {"role": "system", "content": "You are a helpful Porsche automobile expert."},
+        {"role": "user", "content": message},
+    ])
     
     answer = response.choices[0].message.content.strip()
     return answer
@@ -69,7 +68,7 @@ def register(request):
                 error_message = 'Error creating account'
                 return render(request, 'register.html', {'error_message': error_message})
         else:
-            error_message = 'Password dont match'
+            error_message = 'Passwords dont match'
             return render(request, 'register.html', {'error_message': error_message})
     return render(request, 'register.html')
 
